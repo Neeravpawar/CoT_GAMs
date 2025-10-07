@@ -1,0 +1,9 @@
+REASONING:
+1. Identify sets: plants (seattle, san-diego) and markets (new-york, chicago, topeka)
+2. Define parameters: supply capacity at plants, demand at markets, transportation costs
+3. Declare decision variables: shipment quantities from each plant to each market
+4. Formulate supply constraints: total shipments from each plant must not exceed supply capacity
+5. Formulate demand constraints: total shipments to each market must meet or exceed demand
+6. Define objective function: minimize total transportation cost = sum of (cost * shipment) for all routes
+7. Set variable bounds: all shipment quantities must be non-negative
+8. Specify model type: linear programming (LP) since shipments are continuous

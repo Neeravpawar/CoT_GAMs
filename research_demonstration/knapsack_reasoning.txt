@@ -1,0 +1,7 @@
+REASONING:
+1. Identify items set with individual weights and values
+2. Define capacity parameter: maximum weight the knapsack can hold
+3. Declare binary variables: selection decisions for each item
+4. Formulate capacity constraint: total weight of selected items must not exceed capacity
+5. Define objective: maximize total value of selected items
+6. Specify model type: integer programming with binary variables

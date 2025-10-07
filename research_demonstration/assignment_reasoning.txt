@@ -1,0 +1,8 @@
+REASONING:
+1. Identify sets: workers (alice, bob, charlie) and tasks (task1, task2, task3)
+2. Define cost parameter: assignment cost matrix showing cost of assigning each worker to each task
+3. Declare binary variables: assignment decisions (1 if worker assigned to task, 0 otherwise)
+4. Formulate assignment constraints: each worker must be assigned to exactly one task
+5. Formulate coverage constraints: each task must be assigned to exactly one worker
+6. Define objective: minimize total assignment cost
+7. Specify model type: mixed integer programming (MIP) with binary variables

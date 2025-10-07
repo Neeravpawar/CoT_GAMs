@@ -1,0 +1,7 @@
+REASONING:
+1. Identify sets: products and resources for production planning
+2. Define parameters: profit per product, resource usage rates, resource availability
+3. Declare continuous variables: production quantities for each product
+4. Formulate resource constraints: total resource usage cannot exceed availability
+5. Define objective: maximize total profit
+6. Specify model type: linear programming (LP)

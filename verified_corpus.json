@@ -1,0 +1,214 @@
+[
+  {
+    "id": "prob_001",
+    "problem_type": "transport",
+    "text_description": "A manufacturing company needs to transport products from facility_1 and facility_2 to warehouse_1 and warehouse_2. Minimize total transportation cost while satisfying supply capacities and demand requirements.",
+    "tables": {
+      "supply": {
+        "facility_1": 343,
+        "facility_2": 699
+      },
+      "demand": {
+        "warehouse_1": 406,
+        "warehouse_2": 217
+      },
+      "costs": {
+        "facility_1": {
+          "warehouse_1": 3,
+          "warehouse_2": 2
+        },
+        "facility_2": {
+          "warehouse_1": 2,
+          "warehouse_2": 1
+        }
+      }
+    },
+    "reasoning": "PROBLEM ANALYSIS: Transportation Optimization\n\nSETS IDENTIFICATION:\n- Supply nodes: facility_1, facility_2 (plants/factories)\n- Demand nodes: warehouse_1, warehouse_2 (markets/customers)\n\nPARAMETERS DEFINITION:\n- Supply capacities: facility_1: 343; facility_2: 699\n- Demand requirements: warehouse_1: 406; warehouse_2: 217  \n- Transportation costs: facility_1 -> warehouse_1: 3, warehouse_2: 2; facility_2 -> warehouse_1: 2, warehouse_2: 1\n\nVARIABLES DECLARATION:\n- x(i,j): shipment quantity from supply i to demand j\n- z: total transportation cost (objective)\n\nEQUATIONS FORMULATION:\n1. Objective: minimize total cost = sum of (cost * shipment) for all routes\n2. Supply constraints: total shipments from each supply ≤ capacity\n3. Demand constraints: total shipments to each demand ≥ requirement\n\nMATHEMATICAL STRUCTURE:\n- Linear programming problem\n- Flow conservation with capacity and demand bounds\n- Balanced/Unbalanced: Unbalanced (supply 1042 > demand 623)\n\nSOLUTION APPROACH:\n- Use LP solver to find optimal shipment quantities\n- Ensure all constraints are satisfied\n- Minimize total transportation cost",
+    "gams_code": "Sets\n    i   supply nodes    / facility_1, facility_2 /\n    j   demand nodes    / warehouse_1, warehouse_2 /;\n\nParameters\n    a(i)    capacity of supply node i\n        / facility_1 343, facility_2 699 /\n    b(j)    demand at node j  \n        / warehouse_1 406, warehouse_2 217 /\n    c(i,j)  transportation cost from i to j\n        / facility_1.warehouse_1 3, facility_1.warehouse_2 2, facility_2.warehouse_1 2, facility_2.warehouse_2 1 /;\n\nVariables\n    x(i,j)  shipment quantities from i to j\n    z       total transportation cost;\n\nPositive Variable x;\n\nEquations\n    cost        define objective function\n    supply(i)   supply limit at node i\n    demand(j)   demand satisfaction at node j;\n\ncost ..        z =e= sum((i,j), c(i,j) * x(i,j));\nsupply(i) ..   sum(j, x(i,j)) =l= a(i);\ndemand(j) ..   sum(i, x(i,j)) =g= b(j);\n\nModel transport /all/;\nSolve transport using lp minimizing z;\n\ndisplay \"Transportation Problem Solution\";\ndisplay z.l, x.l;",
+    "verification": {
+      "static_valid": false,
+      "solver_success": false,
+      "solver_status": "not_attempted",
+      "objective_value": null,
+      "solution_sample": {},
+      "static_errors": [],
+      "static_warnings": [
+        "Unused symbols: Positive"
+      ],
+      "fully_verified": false
+    }
+  },
+  {
+    "id": "prob_002",
+    "problem_type": "transport",
+    "text_description": "A manufacturing company needs to transport products from factory_A, factory_B and factory_C to market1, market2 and market3. Minimize total transportation cost while satisfying supply capacities and demand requirements.",
+    "tables": {
+      "supply": {
+        "factory_A": 331,
+        "factory_B": 616,
+        "factory_C": 302
+      },
+      "demand": {
+        "market1": 392,
+        "market2": 320,
+        "market3": 322
+      },
+      "costs": {
+        "factory_A": {
+          "market1": 3,
+          "market2": 2,
+          "market3": 2
+        },
+        "factory_B": {
+          "market1": 3,
+          "market2": 2,
+          "market3": 1
+        },
+        "factory_C": {
+          "market1": 2,
+          "market2": 2,
+          "market3": 2
+        }
+      }
+    },
+    "reasoning": "PROBLEM ANALYSIS: Transportation Optimization\n\nSETS IDENTIFICATION:\n- Supply nodes: factory_A, factory_B, factory_C (plants/factories)\n- Demand nodes: market1, market2, market3 (markets/customers)\n\nPARAMETERS DEFINITION:\n- Supply capacities: factory_A: 331; factory_B: 616; factory_C: 302\n- Demand requirements: market1: 392; market2: 320; market3: 322  \n- Transportation costs: factory_A -> market1: 3, market2: 2, market3: 2; factory_B -> market1: 3, market2: 2, market3: 1; factory_C -> market1: 2, market2: 2, market3: 2\n\nVARIABLES DECLARATION:\n- x(i,j): shipment quantity from supply i to demand j\n- z: total transportation cost (objective)\n\nEQUATIONS FORMULATION:\n1. Objective: minimize total cost = sum of (cost * shipment) for all routes\n2. Supply constraints: total shipments from each supply ≤ capacity\n3. Demand constraints: total shipments to each demand ≥ requirement\n\nMATHEMATICAL STRUCTURE:\n- Linear programming problem\n- Flow conservation with capacity and demand bounds\n- Balanced/Unbalanced: Unbalanced (supply 1249 > demand 1034)\n\nSOLUTION APPROACH:\n- Use LP solver to find optimal shipment quantities\n- Ensure all constraints are satisfied\n- Minimize total transportation cost",
+    "gams_code": "Sets\n    i   supply nodes    / factory_A, factory_B, factory_C /\n    j   demand nodes    / market1, market2, market3 /;\n\nParameters\n    a(i)    capacity of supply node i\n        / factory_A 331, factory_B 616, factory_C 302 /\n    b(j)    demand at node j  \n        / market1 392, market2 320, market3 322 /\n    c(i,j)  transportation cost from i to j\n        / factory_A.market1 3, factory_A.market2 2, factory_A.market3 2, factory_B.market1 3, factory_B.market2 2, factory_B.market3 1, factory_C.market1 2, factory_C.market2 2, factory_C.market3 2 /;\n\nVariables\n    x(i,j)  shipment quantities from i to j\n    z       total transportation cost;\n\nPositive Variable x;\n\nEquations\n    cost        define objective function\n    supply(i)   supply limit at node i\n    demand(j)   demand satisfaction at node j;\n\ncost ..        z =e= sum((i,j), c(i,j) * x(i,j));\nsupply(i) ..   sum(j, x(i,j)) =l= a(i);\ndemand(j) ..   sum(i, x(i,j)) =g= b(j);\n\nModel transport /all/;\nSolve transport using lp minimizing z;\n\ndisplay \"Transportation Problem Solution\";\ndisplay z.l, x.l;",
+    "verification": {
+      "static_valid": false,
+      "solver_success": false,
+      "solver_status": "not_attempted",
+      "objective_value": null,
+      "solution_sample": {},
+      "static_errors": [],
+      "static_warnings": [
+        "Unused symbols: Positive"
+      ],
+      "fully_verified": false
+    }
+  },
+  {
+    "id": "prob_003",
+    "problem_type": "transport",
+    "text_description": "A manufacturing company needs to transport products from factory_A, factory_B and factory_C to city_A, city_B and city_C. Minimize total transportation cost while satisfying supply capacities and demand requirements.",
+    "tables": {
+      "supply": {
+        "factory_A": 390,
+        "factory_B": 657,
+        "factory_C": 653
+      },
+      "demand": {
+        "city_A": 339,
+        "city_B": 266,
+        "city_C": 250
+      },
+      "costs": {
+        "factory_A": {
+          "city_A": 2,
+          "city_B": 2,
+          "city_C": 2
+        },
+        "factory_B": {
+          "city_A": 2,
+          "city_B": 2,
+          "city_C": 1
+        },
+        "factory_C": {
+          "city_A": 3,
+          "city_B": 2,
+          "city_C": 2
+        }
+      }
+    },
+    "reasoning": "PROBLEM ANALYSIS: Transportation Optimization\n\nSETS IDENTIFICATION:\n- Supply nodes: factory_A, factory_B, factory_C (plants/factories)\n- Demand nodes: city_A, city_B, city_C (markets/customers)\n\nPARAMETERS DEFINITION:\n- Supply capacities: factory_A: 390; factory_B: 657; factory_C: 653\n- Demand requirements: city_A: 339; city_B: 266; city_C: 250  \n- Transportation costs: factory_A -> city_A: 2, city_B: 2, city_C: 2; factory_B -> city_A: 2, city_B: 2, city_C: 1; factory_C -> city_A: 3, city_B: 2, city_C: 2\n\nVARIABLES DECLARATION:\n- x(i,j): shipment quantity from supply i to demand j\n- z: total transportation cost (objective)\n\nEQUATIONS FORMULATION:\n1. Objective: minimize total cost = sum of (cost * shipment) for all routes\n2. Supply constraints: total shipments from each supply ≤ capacity\n3. Demand constraints: total shipments to each demand ≥ requirement\n\nMATHEMATICAL STRUCTURE:\n- Linear programming problem\n- Flow conservation with capacity and demand bounds\n- Balanced/Unbalanced: Unbalanced (supply 1700 > demand 855)\n\nSOLUTION APPROACH:\n- Use LP solver to find optimal shipment quantities\n- Ensure all constraints are satisfied\n- Minimize total transportation cost",
+    "gams_code": "Sets\n    i   supply nodes    / factory_A, factory_B, factory_C /\n    j   demand nodes    / city_A, city_B, city_C /;\n\nParameters\n    a(i)    capacity of supply node i\n        / factory_A 390, factory_B 657, factory_C 653 /\n    b(j)    demand at node j  \n        / city_A 339, city_B 266, city_C 250 /\n    c(i,j)  transportation cost from i to j\n        / factory_A.city_A 2, factory_A.city_B 2, factory_A.city_C 2, factory_B.city_A 2, factory_B.city_B 2, factory_B.city_C 1, factory_C.city_A 3, factory_C.city_B 2, factory_C.city_C 2 /;\n\nVariables\n    x(i,j)  shipment quantities from i to j\n    z       total transportation cost;\n\nPositive Variable x;\n\nEquations\n    cost        define objective function\n    supply(i)   supply limit at node i\n    demand(j)   demand satisfaction at node j;\n\ncost ..        z =e= sum((i,j), c(i,j) * x(i,j));\nsupply(i) ..   sum(j, x(i,j)) =l= a(i);\ndemand(j) ..   sum(i, x(i,j)) =g= b(j);\n\nModel transport /all/;\nSolve transport using lp minimizing z;\n\ndisplay \"Transportation Problem Solution\";\ndisplay z.l, x.l;",
+    "verification": {
+      "static_valid": false,
+      "solver_success": false,
+      "solver_status": "not_attempted",
+      "objective_value": null,
+      "solution_sample": {},
+      "static_errors": [],
+      "static_warnings": [
+        "Unused symbols: Positive"
+      ],
+      "fully_verified": false
+    }
+  },
+  {
+    "id": "prob_004",
+    "problem_type": "assignment",
+    "text_description": "Assign w1, w2 and w3 to task_alpha, task_beta and task_gamma to minimize total assignment cost. Each worker can be assigned to exactly one task and each task must be completed by exactly one worker.",
+    "tables": {
+      "cost_matrix": {
+        "w1": {
+          "task_alpha": 8,
+          "task_beta": 9,
+          "task_gamma": 18
+        },
+        "w2": {
+          "task_alpha": 10,
+          "task_beta": 13,
+          "task_gamma": 15
+        },
+        "w3": {
+          "task_alpha": 11,
+          "task_beta": 12,
+          "task_gamma": 11
+        }
+      }
+    },
+    "reasoning": "PROBLEM ANALYSIS: Optimal Assignment\n\nSETS IDENTIFICATION:\n- Workers: w1, w2, w3 (available resources)\n- Tasks: task_alpha, task_beta, task_gamma (jobs to be completed)\n\nPARAMETERS DEFINITION:\n- Cost matrix: w1 -> task_alpha: 8, task_beta: 9, task_gamma: 18; w2 -> task_alpha: 10, task_beta: 13, task_gamma: 15; w3 -> task_alpha: 11, task_beta: 12, task_gamma: 11 (cost of each worker-task assignment)\n\nVARIABLES DECLARATION:\n- x(i,j): binary variable for assignment (1 if worker i assigned to task j)\n- z: total assignment cost (objective)\n\nEQUATIONS FORMULATION:\n1. Objective: minimize total assignment cost\n2. Worker constraints: each worker assigned to exactly one task\n3. Task constraints: each task assigned to exactly one worker\n\nMATHEMATICAL STRUCTURE:\n- Integer programming problem\n- Perfect matching in bipartite graph\n- Assignment problem specialization of transportation\n\nSOLUTION APPROACH:\n- Use MIP solver to find optimal assignment\n- Ensure one-to-one matching between workers and tasks\n- Minimize total assignment cost",
+    "gams_code": "Sets\n    i   workers    / w1, w2, w3 /\n    j   tasks      / task_alpha, task_beta, task_gamma /;\n\nParameters\n    c(i,j)  cost of assigning worker i to task j\n        / w1.task_alpha 8, w1.task_beta 9, w1.task_gamma 18, w2.task_alpha 10, w2.task_beta 13, w2.task_gamma 15, w3.task_alpha 11, w3.task_beta 12, w3.task_gamma 11 /;\n\nVariables\n    x(i,j)  assignment of worker i to task j\n    z       total assignment cost;\n\nBinary Variable x;\n\nEquations\n    cost        define objective function\n    worker(i)   each worker assigned to one task\n    task(j)     each task assigned to one worker;\n\ncost ..        z =e= sum((i,j), c(i,j) * x(i,j));\nworker(i) ..   sum(j, x(i,j)) =e= 1;\ntask(j) ..     sum(i, x(i,j)) =e= 1;\n\nModel assignment /all/;\nSolve assignment using mip minimizing z;\n\ndisplay \"Assignment Problem Solution\";\ndisplay z.l, x.l;",
+    "verification": {
+      "static_valid": false,
+      "solver_success": false,
+      "solver_status": "not_attempted",
+      "objective_value": null,
+      "solution_sample": {},
+      "static_errors": [],
+      "static_warnings": [
+        "Unused symbols: Binary"
+      ],
+      "fully_verified": false
+    }
+  },
+  {
+    "id": "prob_005",
+    "problem_type": "knapsack",
+    "text_description": "Select items from book, laptop, camera and phone for a knapsack with capacity 70 to maximize total value without exceeding the weight limit.",
+    "tables": {
+      "items": {
+        "book": {
+          "weight": 7,
+          "value": 17
+        },
+        "laptop": {
+          "weight": 20,
+          "value": 36
+        },
+        "camera": {
+          "weight": 27,
+          "value": 52
+        },
+        "phone": {
+          "weight": 51,
+          "value": 46
+        }
+      }
+    },
+    "reasoning": "PROBLEM ANALYSIS: Knapsack Selection\n\nSETS IDENTIFICATION:\n- Items: book, laptop, camera, phone (available items for selection)\n\nPARAMETERS DEFINITION:\n- Weights: book: 7; laptop: 20; camera: 27; phone: 51\n- Values: book: 17; laptop: 36; camera: 52; phone: 46  \n- Capacity: 70 (maximum weight limit)\n\nVARIABLES DECLARATION:\n- x(i): binary variable for item selection (1 if item i selected)\n- z: total value of selected items (objective)\n\nEQUATIONS FORMULATION:\n1. Objective: maximize total value of selected items\n2. Capacity constraint: total weight of selected items ≤ capacity\n\nMATHEMATICAL STRUCTURE:\n- Integer programming problem\n- 0-1 knapsack optimization\n- Resource allocation with binary decisions\n\nSOLUTION APPROACH:\n- Use MIP solver to select optimal item combination\n- Balance value maximization with weight constraint\n- Binary selection decisions",
+    "gams_code": "Sets\n    i   items   / book, laptop, camera, phone /;\n\nParameters\n    w(i)    weight of item i\n        / book 7, laptop 20, camera 27, phone 51 /\n    v(i)    value of item i\n        / book 17, laptop 36, camera 52, phone 46 /;\n\nScalar capacity / 70 /;\n\nVariables\n    x(i)    selection of item i\n    z       total value;\n\nBinary Variable x;\n\nEquations\n    objective\n    weight_limit;\n\nobjective ..     z =e= sum(i, v(i) * x(i));\nweight_limit ..  sum(i, w(i) * x(i)) =l= capacity;\n\nModel knapsack /all/;\nSolve knapsack using mip maximizing z;\n\ndisplay \"Knapsack Problem Solution\";\ndisplay z.l, x.l;",
+    "verification": {
+      "static_valid": true,
+      "solver_success": true,
+      "solver_status": "optimal",
+      "objective_value": 105.0,
+      "solution_sample": {},
+      "static_errors": [],
+      "static_warnings": [
+        "Unused symbols: Binary, objective, weight_limit"
+      ],
+      "fully_verified": true
+    }
+  }
+]
